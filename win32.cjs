@@ -10,11 +10,6 @@ const amx = [
   ["-int8", "-D GGML_AMX_INT8=ON"],
   ["-int16", "-D GGML_AMX_BF16=ON"],
   ["-amx-tile", "-D GGML_AMX_TILE=ON"],
-  ["-int8-int16", "-D GGML_AMX_INT8=ON -D GGML_AMX_BF16=ON"],
-  [
-    "-int8-int16-amx-tile",
-    "-D GGML_AMX_INT8=ON -D GGML_AMX_BF16=ON -D GGML_AMX_TILE=ON",
-  ],
 ];
 
 /**
