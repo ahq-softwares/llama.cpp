@@ -53,5 +53,5 @@ jobs:
       - name: Try Build Ollama
         run: |
           cmake -B build
-          cmake --build build --config Release -j 8 -DLLAMA_CURL=OFF ${{ matrix.flags }}
+          cmake --build build --config Release -j 8 ${{ matrix.flags }} -DLLAMA_CURL=OFF
         working-directory: llama.cpp
