@@ -9,3 +9,4 @@
 Windows v1.0.0
 "
 
+cmake --build build --config Release -j 8

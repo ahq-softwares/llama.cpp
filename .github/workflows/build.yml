@@ -51,7 +51,8 @@ jobs:
         run: git clone https://github.com/ggml-org/llama.cpp.git
 
       - name: Try Build Ollama
+        shell: pwsh
         run: |
           cmake -B build -DLLAMA_CURL=OFF ${{ matrix.flags }}
-          cmake --build build --config Release -j 8
+          ./activex.ps1
         working-directory: llama.cpp
