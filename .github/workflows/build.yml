@@ -56,14 +56,14 @@ jobs:
           cmake -B build -DLLAMA_CURL=OFF ${{ matrix.flags }}
           ../activex.ps1
 
-          Compress-Archive -Path ${{ github.workspace }}/llama.cpp/build/Release/* -DestinationPath llama.zip
+          Compress-Archive -Path ${{ github.workspace }}\llama.cpp\build\Release\* -DestinationPath ${{ github.workspace }}\llama.zip
         working-directory: llama.cpp
 
       - name: Upload
         uses: actions/upload-artifact@v5
         with:
           path: |
-            ./llama.cpp/llama.zip
+            ./llama.zip
           name: llama-cpp-windows-x64-${{ matrix.suffix }}
 
       # - name: Upload Binaries
