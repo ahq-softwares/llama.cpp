@@ -41,7 +41,7 @@ jobs:
       fail-fast: true
 
       matrix:
-        flags: ${{ needs.windows-matrix.outputs.matrix }}
+        flags: ${{ fromJson(needs.windows-matrix.outputs.matrix) }}
 
     steps:
       - name: Checkout
