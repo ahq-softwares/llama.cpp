@@ -33,7 +33,7 @@ jobs:
   windows:
     needs: [windows-matrix]
 
-    name: Build for Windows (With AHQ ActiveX Superfast Compiler)
+    name: Build for Windows
 
     runs-on: windows-latest
 
@@ -50,7 +50,7 @@ jobs:
       - name: Clone llama.cpp
         run: git clone https://github.com/ggml-org/llama.cpp.git
 
-      - name: Try Build Ollama
+      - name: Build Ollama
         shell: pwsh
         run: |
           cmake -B build -DLLAMA_CURL=OFF ${{ matrix.flags }}
