@@ -98,14 +98,14 @@ jobs:
           cmake -B build -D CMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DLLAMA_CURL=OFF -D GGML_NATIVE=OFF ${{ matrix.flags }}
           ../activex.ps1
 
-          Compress-Archive -Path ${{ github.workspace }}\llama.cpp\build\bin\Release\* -DestinationPath ${{ github.workspace }}\llama.zip
+          Compress-Archive -Path ${{ github.workspace }}\llama.cpp\build\bin\Release\* -DestinationPath ${{ github.workspace }}\llama-cpp-windows-x64${{ matrix.suffix }}.zip
         working-directory: llama.cpp
 
       - name: Upload
         uses: actions/upload-artifact@v5
         with:
           path: |
-            ./llama.zip
+            ./*.zip
           name: llama-cpp-windows-x64-${{ matrix.suffix }}
 
       # - name: Upload Binaries
@@ -115,3 +115,35 @@ jobs:
       #       ./llama.cpp/llama.zip
       #     repo-token: ${{ secrets.GITHUB_TOKEN }}
       #     release-id: ${{ needs.create.outputs.release_id }}
+      #
+  release:
+    needs: [windows, linux]
+
+    name: Create release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Get Tag
+        uses: actions/gh-script@v8
+        id: tag
+        with:
+          result-encoding: string
+          script: |
+            return require("./release.cjs");
+
+      - name: Download
+        uses: actions/download-artifact@v5
+        with:
+          merge-multiple: true
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag: ${{ steps.tag.outputs.result }}
+          body: |
+            # Binaries
+          files: |
+            *.zip
