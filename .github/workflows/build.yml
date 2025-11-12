@@ -7,11 +7,11 @@ on:
     - cron: "0 */12 * * *"
 
 jobs:
-  windows-matrix:
+  matrix:
     outputs:
       matrix: ${{ steps.matrices.outputs.result }}
 
-    name: Generate Windows Matrix
+    name: Generate Windows and Linux Matrix
 
     runs-on: ubuntu-latest
 
@@ -31,17 +31,18 @@ jobs:
   # -D CMAKE_BUILD_TYPE=Release
 
   windows:
-    needs: [windows-matrix]
+    needs: [matrix]
 
-    name: Build for Windows
+    name: Build
 
-    runs-on: windows-latest
+    runs-on: ${{ matrix.os }}
 
     strategy:
       fail-fast: true
 
       matrix:
-        include: ${{ fromJson(needs.windows-matrix.outputs.matrix) }}
+        os: [windows-latest, linux-latest]
+        include: ${{ fromJson(needs.matrix.outputs.matrix) }}
 
     steps:
       - name: Checkout
@@ -64,7 +65,7 @@ jobs:
         with:
           path: |
             ./llama.zip
-          name: llama-cpp-windows-x64-${{ matrix.suffix }}
+          name: llama-cpp-${{ matrix.os }}-x64-${{ matrix.suffix }}
 
       # - name: Upload Binaries
       #   uses: AButler/upload-release-assets@v3.0
