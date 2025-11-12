@@ -6,6 +6,8 @@ on:
   schedule:
     - cron: "0 */12 * * *"
 
+permissions: write-all
+
 jobs:
   matrix:
     outputs:
@@ -54,7 +56,7 @@ jobs:
           cmake -B build -D CMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DLLAMA_CURL=OFF -D GGML_NATIVE=OFF ${{ matrix.flags }}
           ../activex.ps1
 
-          Compress-Archive -Path ${{ github.workspace }}/llama.cpp/build/bin/* -DestinationPath ${{ github.workspace }}\llama.zip
+          Compress-Archive -Path ${{ github.workspace }}/llama.cpp/build/bin/* -DestinationPath ${{ github.workspace }}\llama-cpp-linux-x64${{ matrix.suffix }}.zip
         working-directory: llama.cpp
 
       - name: Upload
